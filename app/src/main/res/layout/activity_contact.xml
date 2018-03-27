@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kotdroid.contentproviderdemo.ContactActivity">
+
+    <EditText
+        android:id="@+id/etName"
+        android:hint="enter name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/etId"
+        android:hint="enter ID (incase of delete and update)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <Button
+           android:id="@+id/btnSaveContact"
+           android:text="save"
+           android:layout_weight="1"
+           android:layout_gravity="center"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content" />
+       <Button
+           android:id="@+id/btnDeleteContact"
+           android:text="delete"
+           android:layout_weight="1"
+           android:layout_gravity="center"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content" />
+       <Button
+           android:id="@+id/btnUpdateContact"
+           android:text="update"
+           android:layout_weight="1"
+           android:layout_gravity="center"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content" />
+   </LinearLayout>
+    <Button
+        android:id="@+id/btnLoadContact"
+        android:text="Fetch Conatacts"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+
+
+</LinearLayout>
