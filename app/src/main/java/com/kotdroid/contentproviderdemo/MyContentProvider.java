@@ -3,6 +3,7 @@ package com.kotdroid.contentproviderdemo;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -30,7 +31,17 @@ public class MyContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         String tabelName = uri.getLastPathSegment();
+        String intentCp = values.getAsString(Util.DESTINATION);
+        Class mainActivityClass = null;
+        try {
+            mainActivityClass = Class.forName(intentCp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        assert mainActivityClass != null;
+
         long id = mSqLiteDatabase.insert(tabelName, null, values);
+        getContext().startActivity(new Intent(getContext(), mainActivityClass));
         return Uri.parse("dummyUri/" + id);
     }
 
@@ -44,8 +55,9 @@ public class MyContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        // TODO: Implement this to handle query requests from clients.
-        throw new UnsupportedOperationException("Not yet implemented");
+
+
+        return mSqLiteDatabase.query(uri.getLastPathSegment(), projection, selection, selectionArgs, sortOrder, null, null);
     }
 
     @Override

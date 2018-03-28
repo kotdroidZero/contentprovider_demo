@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.kotdroid.contentproviderdemo">
+    package="com.kotdroid.contentproviderdemo"
+    android:sharedUserId="com.kotdroid.ipc">
+
+    <permission
+        android:name="com.kotdroid.contentproviderdemo.usercontentprovider.READ_DATABASE"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.kotdroid.contentproviderdemo.usercontentprovider.WRITE_DATABASE"
+        android:protectionLevel="normal" />
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -22,13 +31,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".ContactActivity" />
+
         <provider
             android:name=".MyContentProvider"
             android:authorities="com.kotdroid.contentproviderdemo.usercontentprovider"
             android:enabled="true"
             android:exported="true"
-            tools:ignore="ExportedContentProvider">
-        </provider>
+            tools:ignore="ExportedContentProvider" />
     </application>
 
 </manifest>

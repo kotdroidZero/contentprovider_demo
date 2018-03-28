@@ -11,6 +11,5 @@ public class Contact {
         this.name = name;
         this.number = number;
         this.id=id;
-
     }
 }
