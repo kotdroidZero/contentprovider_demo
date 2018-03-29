@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ContentProviderDemo</string>
+    <string name="stringconsumer">Hello, I am string resource coming from ContentProviderDemo</string>
 </resources>

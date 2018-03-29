@@ -1,5 +1,7 @@
 package com.kotdroid.contentproviderdemo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -13,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import butterknife.BindView;
@@ -44,18 +45,23 @@ public class IpcFragment extends Fragment {
 
     @OnClick(R.id.btnSave)
     public void saveFile(View view) {
-        File file = null;
-        String text = etTextMessage.getText().toString().trim();
-        FileOutputStream fos = null;
-        try {
-            file = setUpImageFile(Util.LOCAL_STORAGE_BASE_PATH_FOR_FILES);
 
-            fos = new FileOutputStream(file, true);
-            fos.write(text.getBytes());
-            tvPath.setText(text + " written to " + file.getAbsolutePath());
-        } catch (IOException e) {
-            tvPath.setText(e.getLocalizedMessage());
-        }
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("IPCDemo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("testingIPC", etTextMessage.getText().toString().trim());
+        editor.apply();
+//        File file = null;
+//        String text = etTextMessage.getText().toString().trim();
+//        FileOutputStream fos = null;
+//        try {
+//            file = setUpImageFile(Util.LOCAL_STORAGE_BASE_PATH_FOR_FILES);
+//
+//            fos = new FileOutputStream(file, true);
+//            fos.write(text.getBytes());
+//            tvPath.setText(text + " written to " + file.getAbsolutePath());
+//        } catch (IOException e) {
+//            tvPath.setText(e.getLocalizedMessage());
+//        }
     }
 
     public static File setUpImageFile(String directory) throws IOException {
