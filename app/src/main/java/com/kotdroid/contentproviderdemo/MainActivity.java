@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
-    @OnClick({R.id.btnSubmit, R.id.btnOpenFragment})
+    @OnClick({R.id.btnSubmit, R.id.btnOpenFragment, R.id.btnIPCRemoteBinding})
     public void save(View v) {
         switch (v.getId()) {
             case R.id.btnSubmit:
@@ -63,18 +63,31 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 data.setAge(etAge.getText().toString().trim());
                 contentValues.put(Util.AGE, data.getAge());
                 contentValues.put(Util.NAME, data.getName());
+                contentValues.put(Util.DESTINATION, "invalid");
                 Uri uri = mContentResolver.insert(Util.USER_URI, contentValues);
                 assert uri != null;
                 Toast.makeText(this, "the data inserted successfully with id:" + uri.getLastPathSegment(), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnOpenFragment:
                 findViewById(R.id.flContainerMain).setVisibility(View.VISIBLE);
-                getSupportFragmentManager().beginTransaction().add(R.id.flContainerMain, new IpcFragment()).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.flContainerMain, new IpcFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.btnIPCRemoteBinding:
+                findViewById(R.id.flContainerMain).setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().add(R.id.flContainerMain, new RemoteBindingClientFragment()).addToBackStack(null).commit();
                 break;
 
 
         }
     }
+
+    @Override public void onBackPressed() {
+        if (0 < getSupportFragmentManager().getBackStackEntryCount()) {
+            getSupportFragmentManager().popBackStackImmediate();
+            findViewById(R.id.flContainerMain).setVisibility(View.GONE);
+        } else super.onBackPressed();
+    }
+
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this, Util.USER_URI, mProjection, null, null, null);
@@ -107,11 +120,4 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menuOpenIpc) {
-
-
-        }
-        return true;
-    }
 }

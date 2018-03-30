@@ -37,7 +37,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="IPC" />
+        android:text="IPC(sharedUserId)" />
+
+    <Button
+        android:id="@+id/btnIPCRemoteBinding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="IPC(Remote Binding Client)" />
 
     <TextView
         android:layout_width="match_parent"
@@ -45,6 +52,7 @@
         android:gravity="center"
         android:text="--------------datalist-------------"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

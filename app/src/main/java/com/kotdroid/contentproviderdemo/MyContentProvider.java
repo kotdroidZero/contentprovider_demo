@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 public class MyContentProvider extends ContentProvider {
 
@@ -29,19 +30,20 @@ public class MyContentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         String tabelName = uri.getLastPathSegment();
         String intentCp = values.getAsString(Util.DESTINATION);
-        Class mainActivityClass = null;
-        try {
-            mainActivityClass = Class.forName(intentCp);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!intentCp.equalsIgnoreCase("invalid")) {
+            Class mainActivityClass = null;
+            try {
+                mainActivityClass = Class.forName(intentCp);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            assert mainActivityClass != null;
+            getContext().startActivity(new Intent(getContext(), mainActivityClass));
         }
-        assert mainActivityClass != null;
-
         long id = mSqLiteDatabase.insert(tabelName, null, values);
-        getContext().startActivity(new Intent(getContext(), mainActivityClass));
         return Uri.parse("dummyUri/" + id);
     }
 
@@ -53,7 +55,7 @@ public class MyContentProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
 
 
@@ -61,7 +63,7 @@ public class MyContentProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection,
+    public int update(@NonNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         // TODO: Implement this to handle requests to update one or more rows.
         throw new UnsupportedOperationException("Not yet implemented");
@@ -69,7 +71,7 @@ public class MyContentProvider extends ContentProvider {
 
     public class DbHelper extends SQLiteOpenHelper {
 
-        public DbHelper(Context context) {
+        DbHelper(Context context) {
             super(context, Util.DATABASE_NAME, null, 1);
         }
 

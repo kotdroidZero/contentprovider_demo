@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/etTextMessage"
+        android:id="@+id/etTextPrefs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -14,17 +14,28 @@
         android:padding="16dp" />
 
     <Button
-        android:id="@+id/btnSave"
+        android:id="@+id/btnSaveInPrefs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="SAVE IN SHARED PREFERENCES"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
-    <TextView
-        android:id="@+id/tvPath"
+    <EditText
+        android:id="@+id/etTextFile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:hint="enter your text"
         android:padding="16dp" />
+
+    <Button
+        android:id="@+id/btnSaveInStorage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="SAVE AS FILE"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
+
+
 </LinearLayout>

@@ -1,6 +1,5 @@
 package com.kotdroid.contentproviderdemo;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,14 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by user12 on 28/3/18.
@@ -27,9 +29,9 @@ import butterknife.OnClick;
 
 public class IpcFragment extends Fragment {
 
-    @BindView(R.id.btnSave) Button btnSave;
-    @BindView(R.id.etTextMessage) EditText etTextMessage;
-    @BindView(R.id.tvPath) TextView tvPath;
+    @BindView(R.id.btnSaveInPrefs) Button btnSave;
+    @BindView(R.id.etTextPrefs) EditText etTextMessage;
+    @BindView(R.id.etTextFile) EditText etTextFile;
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_ipc, container, false);
@@ -43,13 +45,30 @@ public class IpcFragment extends Fragment {
 
     }
 
-    @OnClick(R.id.btnSave)
+    @OnClick({R.id.btnSaveInPrefs})
     public void saveFile(View view) {
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("IPCDemo", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("testingIPC", etTextMessage.getText().toString().trim());
-        editor.apply();
+        switch (view.getId()) {
+            case R.id.btnSaveInPrefs:
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("IPCDemo", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("testingIPC", etTextMessage.getText().toString().trim());
+                editor.apply();
+                break;
+            case R.id.btnSaveInStorage:
+                Log.e("privateAppdataPath", Environment.getDataDirectory() + "/file");
+                File filesDir = getActivity().getFilesDir();
+                File file = new File(filesDir, "demofile.txt");
+                try {
+                    FileOutputStream outputStream = new FileOutputStream(file, true);
+                    outputStream.write(etTextFile.getText().toString().trim().getBytes());
+                    outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
 //        File file = null;
 //        String text = etTextMessage.getText().toString().trim();
 //        FileOutputStream fos = null;
@@ -69,12 +88,10 @@ public class IpcFragment extends Fragment {
         if (Environment.MEDIA_MOUNTED.equals(Environment
                 .getExternalStorageState())) {
             File storageDir = new File(directory);
-            if (storageDir != null) {
-                if (!storageDir.mkdirs()) {
-                    if (!storageDir.exists()) {
-                        Log.d("CameraSample", "failed to create directory");
-                        return null;
-                    }
+            if (!storageDir.mkdirs()) {
+                if (!storageDir.exists()) {
+                    Log.d("CameraSample", "failed to create directory");
+                    return null;
                 }
             }
             imageFile = new File(storageDir, "aativa.txt");
